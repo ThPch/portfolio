@@ -9,6 +9,10 @@
     <span class="buttons">
       <button @click="emailSelection.markRead"
               :disabled="[...emailSelection.emails].every(e => e.read)">
+        Compose
+      </button>
+      <button @click="emailSelection.markRead"
+              :disabled="[...emailSelection.emails].every(e => e.read)">
         Mark Read
       </button>
       <button @click="emailSelection.markUnread"

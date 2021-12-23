@@ -8,6 +8,7 @@
     </div>
     <h2 class="mb-0">Subject: <strong>{{email.subject}}</strong></h2>
     <div><em>From {{email.from}} on {{format(new Date(email.sentAt), 'MMM do yyyy')}}</em></div>
+    <div v-if="email?.to?.length > 0"><em>To {{email.to}}</em></div>
     <div v-html="marked(email.body)" />
   </div>
 </template>
@@ -21,7 +22,7 @@
   export default {
     setup(props, {emit}){
       let email = props.email;
-      
+
       let toggleRead = () => { emit('changeEmail', {toggleRead: true, save: true})}
       let toggleArchive = () => { emit('changeEmail', {toggleArchive: true, save: true, closeModal: true})}
       let goNewer = () => { emit('changeEmail', {changeIndex: -1})}
