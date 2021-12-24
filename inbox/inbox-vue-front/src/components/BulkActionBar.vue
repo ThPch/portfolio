@@ -7,8 +7,7 @@
             @click="bulkSelect" />
     </span>
     <span class="buttons">
-      <button @click="emailSelection.markRead"
-              :disabled="[...emailSelection.emails].every(e => e.read)">
+      <button @click="compose">
         Compose
       </button>
       <button @click="emailSelection.markRead"
@@ -25,11 +24,21 @@
       </button>
     </span>
   </div>
+
+  <ModalView v-if="newMail" @closeModal="openedEmail = null">
+    <!-- <NewMailView :email="openedEmail" @changeEmail="changeEmail" /> -->
+    <NewMailView/>
+  </ModalView>
 </template>
 
+
 <script>
+  import ModalView from '@/components/ModalView.vue';
+  import NewMailView from '@/components/NewMailView.vue';
+  import MailView from '@/components/MailView.vue';
   import useEmailSelection from '@/composables/use-email-selection';
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue';
+
   export default {
     setup(props){
       let emailSelection = useEmailSelection();
@@ -47,17 +56,33 @@
         }
       }
       return {
+        ModalView,
+        MailView,
+        NewMailView,
         allEmailsSelected,
         someEmailsSelected,
         bulkSelect,
         emailSelection,
-        numberSelected
+        numberSelected,
+        newMail: ref(false),
+        openedEmail: ref(null)
       }
+    },
+    components: {
+      NewMailView,
+      ModalView,
     },
     props: {
       emails: {
         type: Array,
         required: true
+      }
+    },
+    methods: {
+      compose() {
+        console.log("compose button is pressed")
+        this.newMail = true
+        this.openedEmail = true
       }
     }
   }
@@ -66,3 +91,6 @@
 <style scoped>
 
 </style>
+
+
+
