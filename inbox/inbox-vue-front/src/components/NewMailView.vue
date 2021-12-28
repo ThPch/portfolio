@@ -26,7 +26,7 @@
 				<div class="container-contact100-form-btn">
 					<button class="contact100-form-btn" @click="sendEmailBtn">
 						<span>
-							Send
+							Send to {{toMail}}
 						</span>
 					</button>
 				</div>
@@ -44,8 +44,22 @@
   export default {
     setup(props, {emit}){
       let fromMail = ref("thPch@mail.com")
+      let toMail = ref(null)
+      let subject = ref(null)
+      let body = ref(null)
 
-      let sentActionDone = (mail) => {
+
+      let sentActionDone = () => {
+
+        let mail = {
+          from : fromMail.value,
+          to : toMail.value,
+          subject : subject.value,
+          body : body.value,
+          sentAt : new Date(),
+          sent : true,
+        }
+
         emit('sentActionDone', {mail: mail, closeModal: true})
       }
 
@@ -60,6 +74,9 @@
       return {
         //Do not forget to return the setup function you want to use in methods API
         fromMail,
+        toMail,
+        subject,
+        body,
         useKeydown,
         emit,
         closeModal,
@@ -78,18 +95,7 @@
     },
     methods: {
       sendEmailBtn() {
-        let mail = {
-          from : this.fromMail,
-          to : this.toMail,
-          subject : this.subject,
-          body : this.body,
-          sentAt : new Date(),
-          openedMail : false,
-          archived : true,
-          sent : true
-        }
-
-        this.sentActionDone(mail)
+         this.sentActionDone()
       }
     }
   }
