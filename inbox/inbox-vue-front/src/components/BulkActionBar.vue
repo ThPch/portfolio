@@ -27,7 +27,7 @@
 
   <ModalView v-if="newMail" @closeModal="openedEmail = null">
     <!-- <NewMailView :email="openedEmail" @changeEmail="changeEmail" /> -->
-    <NewMailView/>
+    <NewMailView @sentActionDone="sentActionDone"/>
   </ModalView>
 </template>
 
@@ -82,8 +82,19 @@
       compose() {
         console.log("compose button is pressed")
         this.newMail = true
-        this.openedEmail = true
+      },
+
+      sentActionDone({closeModal, mail}){
+        if(closeModal){
+          this.newMail = false
+        }
+        if(mail) {
+          console.log(mail)
+          console.log("email envoyé")
+        }
       }
+
+
     }
   }
 </script>

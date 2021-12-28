@@ -40,7 +40,7 @@ input[type="checkbox"] {
   background: white;
   border-radius: 2px;
   border: 1px solid #555;
-  position: relative;
+  /* position: relative; */
   vertical-align: middle;
   padding: 10px;
 }
@@ -91,6 +91,7 @@ input[type="checkbox"]:checked {
 
 /* New Email Modal */
 .newmail-display {
+  margin-right: 2%;
   background-color: #eee;
   text-align: left;
 }

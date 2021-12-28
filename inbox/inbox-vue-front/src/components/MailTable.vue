@@ -39,6 +39,7 @@
   import { format } from 'date-fns';
   import axios from 'axios';
   import MailView from '@/components/MailView.vue';
+  import NewMailView from '@/components/NewMailView.vue';
   import ModalView from '@/components/ModalView.vue';
   import BulkActionBar from '@/components/BulkActionBar.vue';
   import { reactive, ref } from 'vue';
@@ -126,6 +127,7 @@
     },
     components: {
       MailView,
+      NewMailView,
       ModalView,
       BulkActionBar,
     },

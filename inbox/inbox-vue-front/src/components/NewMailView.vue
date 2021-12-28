@@ -5,21 +5,26 @@
 		<div class="wrap-contact100">
 				<div class="wrap-input100 validate-input bg1" data-validate="Please Type Your Name">
 					<span class="label-input100">From </span>
-					<input class="input100" type="text" name="email" value="thPch@mail.com" disabled>
+					<input class="input100" type="text" name="fromMail" v-model="fromMail" disabled >
 				</div>
 
 				<div class="wrap-input100 validate-input bg1" data-validate="Please Type Your Name">
 					<span class="label-input100">To </span>
-					<input class="input100" type="text" name="email" placeholder="Enter Your Email ">
+					<input class="input100" type="text" name="toMail" v-model="toMail" placeholder="Enter Your Email ">
+				</div>
+
+        <div class="wrap-input100 validate-input bg1" data-validate="Please Type your Subject">
+					<span class="label-input100">Subject </span>
+					<input class="input100" type="text" name="email" v-model="subject" placeholder="Subject ">
 				</div>
 
 				<div class="wrap-input100 validate-input bg0 rs1-alert-validate" data-validate = "Please Type Your Message">
 					<span class="label-input100">Message</span>
-					<textarea class="input100" name="message" placeholder="Your message here..."></textarea>
+					<textarea class="input100" name="message" v-model="body" placeholder="Your message here..." style="resize: none;"></textarea>
 				</div>
 
 				<div class="container-contact100-form-btn">
-					<button class="contact100-form-btn">
+					<button class="contact100-form-btn" @click="sendEmailBtn">
 						<span>
 							Send
 						</span>
@@ -34,19 +39,57 @@
 <script>
   import  { format } from 'date-fns'
   import useKeydown from '../composables/use-keydown'
+  import {ref, getCurrentInstance } from 'vue'
 
   export default {
     setup(props, {emit}){
-      // let email = props.email;
-      let sendEmail = () => { emit('sendEmail', {sent: true, save: true, closeModal: true})}
+      let fromMail = ref("thPch@mail.com")
+
+      let sentActionDone = (mail) => {
+        emit('sentActionDone', {mail: mail, closeModal: true})
+      }
+
+      let closeModal = () => { emit('sentActionDone', {closeModal: true})}
 
       useKeydown([
-        {key: 'enter', fn: sendEmail},
+        {key: 'Enter', fn: sentActionDone},
+        {key: 'Escape', fn: closeModal},
       ])
 
+
       return {
-        format,
-        sendEmail
+        //Do not forget to return the setup function you want to use in methods API
+        fromMail,
+        useKeydown,
+        emit,
+        closeModal,
+        sentActionDone,
+      }
+    },
+
+    components: {
+      useKeydown,
+    },
+    props: {
+      email: {
+        type: Array,
+        required: true
+      }
+    },
+    methods: {
+      sendEmailBtn() {
+        let mail = {
+          from : this.fromMail,
+          to : this.toMail,
+          subject : this.subject,
+          body : this.body,
+          sentAt : new Date(),
+          openedMail : false,
+          archived : true,
+          sent : true
+        }
+
+        this.sentActionDone(mail)
       }
     }
   }
